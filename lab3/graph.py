@@ -519,4 +519,4 @@ if __name__ == "__main__":
         brushColor(randint(0, 255), randint(0, 255), randint(0, 255))
         polygon([(70, 100), (150, i), (230, 100), (70, 100)])
 
-    run()
+run()
