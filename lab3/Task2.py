@@ -57,8 +57,8 @@ def ufo(x, y, size):
     ufo function creates an ufo, which consists of 3 types of objests:
             1) ufo_light is the light underneath the space ship
             2) ufo_ship is the ship itself
-            3) ufo_lamp is lamp, plased on the ship, it is possible to change their coords, 
-            change their size and rotation 
+            3) ufo_lamp is lamp, plased on the ship, it is possible to change their coords,
+            change their size and rotation
             🛸
     """
 
@@ -129,7 +129,7 @@ def alien(x, y, size, mirror, color='#C7F971'):
     alien has a lot of atributes (it is possible to constract one by yourself):
             1)body consists of the main_body and ass (ass is able to be rotated)
             2)there are to types of hands: up and down
-            3)two types of legs 
+            3)two types of legs
             4)head part includes the head itself, horns, eyes
             5)apple (which is not necessary, but according to the task it is much easier to place apple function here)
 
