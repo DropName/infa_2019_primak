@@ -1,33 +1,80 @@
-from graph import *
+from graph import penSize
+from graph import penColor
+from graph import brushColor
+
+from graph import circle
+from graph import line
+from graph import polygon
+from graph import rectangle
+from graph import point
+
+from graph import randint
+from graph import run
+
 import math as m
 
 
-def alien(x, y, size, mirror):
-    body(x, y, size, mirror)
-    apple(x + 3 * size * mirror, y - size * 3.2, size / 28, mirror)
-
-
-def alien_noApple(x, y, size, mirror):
-    body(x, y, size, mirror)
-
-
 def apple(x, y, size, mirror):
+    """
+    apple function draws an apple of an radius r pxls for size = 1
+        there are 3 components:
+                1) main body
+                2) root, represented by a line
+                3) leaf, which is obviously a sqrt curve
 
+            The coords of root and leaf are given regarding r of an main body,
+            so all "strange" numbers in the further functions is also just a colibrate number for beuty purposes
+            (._.)
+
+    """
     r = 25 * size
+
+    # apple body
     penColor(245, 84, 84)
     penSize(0)
     brushColor(245, 84, 84)
     circle(x, y, r)
 
+    # root
     penColor("black")
     penSize(2 * size)
     line(x, y - r * 0.8, x + r * 0.5 * mirror, y - r * 1.7)
+    # leaf
     brushColor(100, 225, 100)
     penSize(size)
-    polygon(curve(x + r * 0.1 * mirror, y - r * 1.1, size, not (mirror + 1)))
+    polygon(curve(x + r * 0.1 * mirror, y - r * 1.1, size, mirror))
+
+
+def curve(x, y, size, mirror):  # for drawing leaf
+    res = []
+    for i in range(int(40 * size)):
+        res.append((x + mirror * i * 1.5 * size, y - (7 * size) * (i**0.3)))
+    return res
 
 
 def ufo(x, y, size):
+    """
+    ufo function creates an ufo, which consists of 3 types of objests:
+            1) ufo_light is the light underneath the space ship
+            2) ufo_ship is the ship itself
+            3) ufo_lamp is lamp, plased on the ship, it is possible to change their coords, 
+            change their size and rotation 
+            🛸
+    """
+
+    ufo_light(x, y, size)
+
+    ufo_ship(x, y, size)
+
+    ufo_lamp(x, y + 3 * size, size)
+    ufo_lamp(x - 8 * size, y + 2 * size, size)
+    ufo_lamp(x + 8 * size, y + 2 * size, size)
+    ufo_lamp(x - 14 * size, y + 0.05 * size, size)
+    ufo_lamp(x + 14 * size, y + 0.05 * size, size)
+
+
+def ufo_light(x, y, size):
+    # light - light pillar of an ufo
     penSize(0)
     brushColor(210, 250, 210)
     penColor(210, 250, 210)
@@ -36,36 +83,31 @@ def ufo(x, y, size):
     light.append((x - 20 * size, y + 20 * size))
     light.append((x + 20 * size, y + 20 * size))
     polygon(light)
+
+
+def ufo_ship(x, y, size):
+    # main body
     brushColor(168, 168, 168)
     penColor(168, 168, 168)
-
     ellips(x, y, 20 * size, 5 * size, 0)
-
+    # glass
     brushColor(180, 220, 220)
     penColor(180, 220, 220)
     ellips(x, y - 3 * size, 12 * size, 4 * size, 0)
+
+
+def ufo_lamp(x, y, size, rotate=0):
+    # lamps
     brushColor('white')
     penColor('white')
-    ellips(x, y + 3 * size, 3 * size, 1 * size, 0)
-    ellips(x - 8 * size, y + 2 * size, 3 * size, 1 * size, 0)
-    ellips(x + 8 * size, y + 2 * size, 3 * size, 1 * size, 0)
-    ellips(x - 14 * size, y + 0.05 * size, 3 * size, 1 * size, 0)
-    ellips(x + 14 * size, y + 0.05 * size, 3 * size, 1 * size, 0)
-
-
-def curve(x, y, size, mirror):
-    if mirror:
-        m = 1
-    else:
-        m = -1
-
-    res = []
-    for i in range(int(40 * size)):
-        res.append((x + m * i * 0.6 * size, y + (-5 * size) * (i**0.3)))
-    return res
+    ellips(x, y, 3 * size, 1 * size, 0)
 
 
 def ellips(x, y, a, b, f):
+    """
+    a - x radius; b - y radius; f - angle(dgr)
+
+    """
     f = f * m.pi / 180
     x_e = [i for i in range(-a, a)]
     y1, y2 = [], []
@@ -82,67 +124,182 @@ def ellips(x, y, a, b, f):
     polygon(y1 + y2)
 
 
-def body(x_b, y_b, S, mirror):
-    color = '#C7F971'
+def alien(x, y, size, mirror, color='#C7F971'):
+    """
+    alien has a lot of atributes (it is possible to constract one by yourself):
+            1)body consists of the main_body and ass (ass is able to be rotated)
+            2)there are to types of hands: up and down
+            3)two types of legs 
+            4)head part includes the head itself, horns, eyes
+            5)apple (which is not necessary, but according to the task it is much easier to place apple function here)
+
+            also it is possible to change proportions of an any part of the alien in the code section,
+            by the way this alien is easy to be painted in any color
+
+            p.s. alein's balls can be painted differentely by adding color atribute to the horns function
+            (.Y.)
+    """
     penColor(color)
     brushColor(color)
-    ellips(x_b, y_b, S, 1.5 * S // 1, 0)  # main body
 
-    ellips(x_b + 1.1 * S * mirror, y_b - 1.2 * S, S // 2, S // 3, 0)
-    ellips(x_b - 1.1 * S * mirror, y_b - 0.7 * S, S // 2, S // 3, 0)
-    ellips(x_b - 1.5 * S * mirror, y_b - 0.2 *
-           S, S // 2, S * 1.2 // 2, 30 * mirror)
-    ellips(x_b - 2.5 * S * mirror, y_b + 0.5 * S,
-           S // 2, S * 0.8 // 1, -100 * mirror)
+    main_body(x, y, size)
+    ass(x, y, size)
 
-    ellips(x_b + 2.1 * S * mirror, y_b - 1.4 *
-           S, int(S / 1.1), int(S // 2.5), -20 * mirror)
-    ellips(x_b + 2.5 * S * mirror, y_b - 2.1 * S,
-           int(S / 1.6), int(S / 2.4), 10 * mirror)
-    ellips(x_b, y_b + S * 1.5, S, S, 0)
+    hand_down(x, y, size, mirror)
+    hand_up(x, y, size, mirror)
 
-    ellips(x_b + S * mirror, y_b + S * 2.7, S //
-           2, S // 1, -10 * mirror)  # left_leg
-    ellips(x_b + S * mirror, y_b + S * 4, S // 2, S // 1, -10 * mirror)
-    ellips(x_b + 1.6 * S * mirror, y_b + S * 5,
-           S // 2, S * 0.9 // 1, -90 * mirror)
+    leg_left(x, y, size, mirror)
+    leg_right(x, y, size, mirror)
 
-    ellips(x_b - S * mirror, y_b + S * 2.7, S //
-           2, S // 1, 10 * mirror)  # right_leg
-    ellips(x_b - 1.3 * S * mirror, y_b + S * 4, S // 2, S // 1, 10 * mirror)
-    ellips(x_b - 1.8 * S * mirror, y_b + S * 5,
-           S // 2, S * 0.9 // 1, 70 * mirror)
+    head(x, y, size)
+    eyes(x, y, size, mirror)
+    horns(x, y, size)
 
-    penSize(S // 2)  # head
-    polygon([(x_b + 1.6 * S, y_b - 3 * S),
-             (x_b, y_b + 1 * S - 3 * S), (x_b - 1.6 * S, y_b - 3 * S)])
-    rectangle(x_b - 0.15 * S, y_b + 1 * S - 3 * S,
-              x_b + 0.15 * S, y_b + 3 * S - 3 * S)
-    penSize(0.5 * S)
-    line(x_b + 1.6 * S, y_b - 3 * S, x_b + 2.2 * S, y_b - 4 * S)
-    line(x_b - 1.6 * S, y_b - 3 * S, x_b - 2.2 * S, y_b - 4 * S)
+    apple(x + 3 * size * mirror, y - size * 3.2, size / 28, mirror)
 
-    brushColor('red')
-    penSize(0.15 * S)
-    circle(x_b + 2.3 * S, y_b - 4.1 * S, 0.3 * S)
-    circle(x_b - 2.3 * S, y_b - 4.1 * S, 0.3 * S)
 
+def alien_noApple(x, y, size, mirror, color='#C7F971'):
+    """
+    just another type of an alien
+    """
+
+    penColor(color)
+    brushColor(color)
+
+    main_body(x, y, size)
+    ass(x, y, size)
+
+    hand_down(x, y, size, mirror)
+    hand_up(x, y, size, mirror)
+
+    leg_left(x, y, size, mirror)
+    leg_right(x, y, size, mirror)
+
+    head(x, y, size)
+    eyes(x, y, size, mirror)
+    horns(x, y, size)
+
+
+def alien_handy(x, y, size, mirror, color='#C7F971'):
+    """
+    just another type of an alien
+    """
+
+    penColor(color)
+    brushColor(color)
+
+    main_body(x, y, size)
+    ass(x, y, size)
+
+    hand_down(x, y, size, mirror)
+    hand_down(x, y, size, -mirror)
+    hand_up(x, y, size, -mirror)
+    hand_up(x, y, size, mirror)
+
+    leg_left(x, y, size, mirror)
+    leg_right(x, y, size, mirror)
+
+    head(x, y, size)
+    eyes(x, y, size, mirror)
+    horns(x, y, size)
+
+
+def main_body(x, y, size, rotate=0):
+    # main body
+    ellips(x, y, size, 1.5 * size // 1, 0)
+    # neck
+    rectangle(x - 0.15 * size, y + 1 * size - 3 * size,
+              x + 0.15 * size, y + 3 * size - 3 * size)
+
+
+def hand_down(x, y, size, mirror):
+    """
+    standart: stands for the left hand
+    """
+    ellips(x - 1.1 * size * mirror, y - 0.7 * size, size // 2, size // 3, 0)
+    ellips(x - 1.5 * size * mirror, y - 0.2 *
+           size, size // 2, size * 1.2 // 2, 30 * mirror)
+    ellips(x - 2.5 * size * mirror, y + 0.5 * size,
+           size // 2, size * 0.8 // 1, -100 * mirror)
+
+
+def hand_up(x, y, size, mirror):
+    """
+    standart: stands for the right hand
+    """
+    ellips(x + 1.1 * size * mirror, y - 1.2 * size, size // 2, size // 3, 0)
+    ellips(x + 2.1 * size * mirror, y - 1.4 *
+           size, int(size / 1.1), int(size // 2.5), -20 * mirror)
+    ellips(x + 2.5 * size * mirror, y - 2.1 * size,
+           int(size / 1.6), int(size / 2.4), 10 * mirror)
+
+
+def ass(x, y, size, rotate=0):
+    ellips(x, y + size * 1.5, size, size, rotate)
+
+
+def leg_left(x, y, size, mirror):
+    ellips(x + size * mirror, y + size * 2.7,
+           size // 2, size // 1, -10 * mirror)
+    ellips(x + size * mirror, y + size * 4, size // 2, size // 1, -10 * mirror)
+    ellips(x + 1.6 * size * mirror, y + size * 5,
+           size // 2, size * 0.9 // 1, -90 * mirror)
+
+
+def leg_right(x, y, size, mirror):
+    ellips(x - size * mirror, y + size * 2.7, size //
+           2, size // 1, 10 * mirror)
+    ellips(x - 1.3 * size * mirror, y + size *
+           4, size // 2, size // 1, 10 * mirror)
+    ellips(x - 1.8 * size * mirror, y + size * 5,
+           size // 2, size * 0.9 // 1, 70 * mirror)
+
+
+def head(x, y, size):
+    penSize(size // 2)
+    polygon([(x + 1.6 * size, y - 3 * size),
+             (x, y + 1 * size - 3 * size), (x - 1.6 * size, y - 3 * size)])
+
+
+def horns(x, y, size, color="red"):
+    """
+    note: it is possible to change the cf alien's ball (horn balls)
+    """
+    penSize(0.5 * size)
+    line(x + 1.6 * size, y - 3 * size, x + 2.2 * size, y - 4 * size)
+    line(x - 1.6 * size, y - 3 * size, x - 2.2 * size, y - 4 * size)
+
+    brushColor(color)
+    penSize(0.15 * size)
+    circle(x + 2.3 * size, y - 4.1 * size, 0.3 * size)
+    circle(x - 2.3 * size, y - 4.1 * size, 0.3 * size)
+
+
+def eyes(x, y, size, mirror):
     penSize(1)
     brushColor('black')
-    circle(x_b + 1 * S, y_b - 2.8 * S, S // 2)
-    circle(x_b - 1 * S, y_b - 2.8 * S, S // 2)
+    circle(x + 1 * size, y - 2.8 * size, size // 2)
+    circle(x - 1 * size, y - 2.8 * size, size // 2)
     brushColor('white')
-    ellips(x_b + 1.2 * S * mirror, y_b - 2.9 * S, S // 6, S // 4, 0)
-    ellips(x_b - 0.8 * S * mirror, y_b - 2.9 * S, S // 6, S // 4, 0)
+    ellips(x + 1.2 * size * mirror, y - 2.9 * size, size // 6, size // 4, 0)
+    ellips(x - 0.8 * size * mirror, y - 2.9 * size, size // 6, size // 4, 0)
 
 
-def cloud(x, y, S, color):
+def cloud(x, y, size, color):
+    """
+    just 3 elipses along each other
+    """
     colinc = 10
     brushColor(color + colinc, color + colinc, color + colinc)
     penColor(color + colinc, color + colinc, color + colinc)
-    ellips(x - 1.2 * S, y, S, S, 0)
-    ellips(x, y, S, S, 0)
-    ellips(x + 1.2 * S, y, S, S, 0)
+    ellips(x - 1.2 * size, y, size, size, 0)
+    ellips(x, y, size, size, 0)
+    ellips(x + 1.2 * size, y, size, size, 0)
+
+
+"""
+==========================PROGRAM==========================
+"""
 
 
 brushColor(70, 50, 90)
@@ -155,6 +312,7 @@ rectangle(0, 400, 500, 800)
 brushColor(255, 244, 164)
 circle(350, 120, 100)
 
+# drawing stars
 for i in range(200):
     x_star = randint(0, 500)
     y_star = randint(0, 400)
@@ -165,6 +323,7 @@ for i in range(200):
     point(x_star, y_star + 1)
     point(x_star, y_star - 1)
 
+# drawing gradient clouds
 for i in range(100):
     cloud(350, 180, 70 - i // 2, i)
 for i in range(100):
@@ -178,10 +337,10 @@ ufo(50, 300, 5)
 ufo(280, 280, 7)
 
 
-alien(60, 360, 15, -1)
+alien(60, 360, 15, -1, "yellow")
 alien(330, 420, 20, 1)
-alien(460, 370, 14, -1)
-alien_noApple(240, 470, 13, 1)
+alien_handy(460, 370, 14, -1, "orange")
+alien_noApple(240, 470, 13, 1, "purple")
 
 
 run()
