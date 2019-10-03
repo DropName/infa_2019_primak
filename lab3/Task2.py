@@ -16,38 +16,39 @@ import math as m
 
 def apple(x, y, size, mirror):
     """
-    apple function draws an apple of an radius r pxls for size = 1
+    apple function draws the apple of the radius r pxls for size = 1
         there are 3 components:
                 1) main body
                 2) root, represented by a line
                 3) leaf, which is obviously a sqrt curve
 
-            The coords of root and leaf are given regarding r of an main body,
-            so all "strange" numbers in the further functions is also just a colibrate number for beuty purposes
+            The coords of root and leaf are given regarding to r of an main body,
+            so all "strange" numbers in the further functions are also just a calibrate number for beauty's purposes
             (._.)
 
+            mirror is for drawing mirrored images
     """
-    r = 25 * size
-
     # apple body
     penColor(245, 84, 84)
     penSize(0)
     brushColor(245, 84, 84)
-    circle(x, y, r)
-
+    circle(x, y, 25 * size)
     # root
     penColor("black")
     penSize(2 * size)
-    line(x, y - r * 0.8, x + r * 0.5 * mirror, y - r * 1.7)
+    line(x, y - size * 20, x + size * 12.5 * mirror, y - size * 42.5)
     # leaf
     brushColor(100, 225, 100)
     penSize(size)
-    polygon(curve(x + r * 0.1 * mirror, y - r * 1.1, size, mirror))
+    polygon(curve(x + size * 2.5 * mirror, y - size * 27.5, size, mirror))
 
 
-def curve(x, y, size, mirror):  # for drawing leaf
+def curve(x, y, size, mirror):
+    """
+    function, wich draws polygon sqrt-shape like
+    """
     res = []
-    for i in range(int(40 * size)):
+    for i in range(25):
         res.append((x + mirror * i * 1.5 * size, y - (7 * size) * (i**0.3)))
     return res
 
@@ -61,7 +62,6 @@ def ufo(x, y, size):
             change their size and rotation
             🛸
     """
-
     ufo_light(x, y, size)
 
     ufo_ship(x, y, size)
@@ -153,16 +153,15 @@ def alien(x, y, size, mirror, color='#C7F971'):
 
     head(x, y, size)
     eyes(x, y, size, mirror)
-    horns(x, y, size)
+    horns(x, y, size, "blue")
 
     apple(x + 3 * size * mirror, y - size * 3.2, size / 28, mirror)
 
 
-def alien_noApple(x, y, size, mirror, color='#C7F971'):
+def alien_simple(x, y, size, mirror, color='#C7F971'):
     """
     just another type of an alien
     """
-
     penColor(color)
     brushColor(color)
 
@@ -184,7 +183,6 @@ def alien_handy(x, y, size, mirror, color='#C7F971'):
     """
     just another type of an alien
     """
-
     penColor(color)
     brushColor(color)
 
@@ -276,6 +274,9 @@ def horns(x, y, size, color="red"):
 
 
 def eyes(x, y, size, mirror):
+    """
+    draws two black circles and two ellipses inside them, the coord of middle point is (x,y), can be mirrored
+    """
     penSize(1)
     brushColor('black')
     circle(x + 1 * size, y - 2.8 * size, size // 2)
@@ -297,9 +298,33 @@ def cloud(x, y, size, color):
     ellips(x + 1.2 * size, y, size, size, 0)
 
 
-"""
-==========================PROGRAM==========================
-"""
+def star(x_star, y_star):
+    """
+    draws a star '+' shaped
+    """
+    penColor(255, 244, 164)
+    point(x_star, y_star)
+    point(x_star + 1, y_star)
+    point(x_star - 1, y_star)
+    point(x_star, y_star + 1)
+    point(x_star, y_star - 1)
+
+
+def starry_sky(n, width = 500, height = 400):
+    """
+    randomly splits n stars across the rectangle with height and width
+    """
+    for i in range(n):
+        star(randint(0, width), randint(0, height))
+
+
+def fancy_cloud(x, y, size, n):
+    """
+    draws n clouds with decreasing size, creates gradient effect
+    """
+    for i in range(n):
+        cloud(x, y, size - i // 2, i)
+
 
 
 brushColor(70, 50, 90)
@@ -308,39 +333,23 @@ rectangle(0, 0, 500, 400)
 brushColor(59, 135, 59)
 rectangle(0, 400, 500, 800)
 
-
 brushColor(255, 244, 164)
 circle(350, 120, 100)
 
-# drawing stars
-for i in range(200):
-    x_star = randint(0, 500)
-    y_star = randint(0, 400)
-    penColor(255, 244, 164)
-    point(x_star, y_star)
-    point(x_star + 1, y_star)
-    point(x_star - 1, y_star)
-    point(x_star, y_star + 1)
-    point(x_star, y_star - 1)
+starry_sky(200)
 
-# drawing gradient clouds
-for i in range(100):
-    cloud(350, 180, 70 - i // 2, i)
-for i in range(100):
-    cloud(400, 40, 50 - i // 2, i)
-for i in range(70):
-    cloud(180, 30, 60 - i // 2, i)
-
+fancy_cloud(350, 180, 70, 100)
+fancy_cloud(400, 40, 50, 100)
+fancy_cloud(180, 30, 60, 70)
 
 ufo(440, 100, 3)
 ufo(50, 300, 5)
 ufo(280, 280, 7)
 
-
 alien(60, 360, 15, -1, "yellow")
 alien(330, 420, 20, 1)
 alien_handy(460, 370, 14, -1, "orange")
-alien_noApple(240, 470, 13, 1, "purple")
+alien_simple(240, 470, 13, 1, "purple")
 
 
 run()
