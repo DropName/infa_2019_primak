@@ -1,15 +1,4 @@
-from graph import penSize
-from graph import penColor
-from graph import brushColor
-
-from graph import circle
-from graph import line
-from graph import polygon
-from graph import rectangle
-from graph import point
-
-from graph import randint
-from graph import run
+from graphOld import*
 
 import math as m
 
