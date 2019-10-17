@@ -1,4 +1,6 @@
-from graphOld import*
+from graph import brushColor, penColor, penSize
+from graph import circle, line, polygon, point, rectangle
+from graph import canvasSize, windowSize
 
 import math as m
 
@@ -299,7 +301,7 @@ def star(x_star, y_star):
     point(x_star, y_star - 1)
 
 
-def starry_sky(n, width = 500, height = 400):
+def starry_sky(n, width=500, height=400):
     """
     randomly splits n stars across the rectangle with height and width
     """
@@ -315,6 +317,8 @@ def fancy_cloud(x, y, size, n):
         cloud(x, y, size - i // 2, i)
 
 
+windowSize(w = 600, h = 800)
+canvasSize(500, 800)
 
 brushColor(70, 50, 90)
 rectangle(0, 0, 500, 400)
