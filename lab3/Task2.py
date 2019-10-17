@@ -1,7 +1,8 @@
 from graph import brushColor, penColor, penSize
 from graph import circle, line, polygon, point, rectangle
-from graph import canvasSize, windowSize
+from graph import canvasSize, windowSize, run
 
+from random import randint
 import math as m
 
 
@@ -317,7 +318,7 @@ def fancy_cloud(x, y, size, n):
         cloud(x, y, size - i // 2, i)
 
 
-windowSize(w = 600, h = 800)
+windowSize(600, 800)
 canvasSize(500, 800)
 
 brushColor(70, 50, 90)
