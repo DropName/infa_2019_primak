@@ -3,7 +3,7 @@ import math as m
 
 def rotate_square(coords, angle):
     """
-    rotates a square with coords (star) by angle(dgr, clockwise) 
+    rotates a square with coords (star) by angle(dgr, clockwise)
     """
     x0 = (coords[0][0] + coords[1][0] + coords[2][0] + coords[3][0]) / 4
     y0 = (coords[0][1] + coords[1][1] + coords[2][1] + coords[3][1]) / 4
