@@ -1,4 +1,5 @@
-from tkinter import *
+from tkinter import Tk, Canvas, Label, RIGHT, Entry, Button
+
 from random import randint, choice
 from math import sqrt
 
