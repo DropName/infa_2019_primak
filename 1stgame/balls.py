@@ -5,6 +5,17 @@ from math import sqrt
 
 
 class Ball:
+    """
+    ball class contains atributes:
+    .x1,.x2,.y1,.y2 - coords of rectangle with circule inside
+    .velx, .vely stand for axis' velocities
+    .fill stands for color of the ball
+    .canvas for placing ball on the canvas
+    .ball creates graphically the oval
+
+    method move_ball allows the ball to move with velx vely and reflect from the borders
+    """
+
     def __init__(self, canvas, x1, y1, x2, y2, velx, vely, fill):
         self.x1 = x1
         self.y1 = y1
@@ -31,15 +42,19 @@ class Ball:
         self.canvas.after(20, self.move_ball)
 
 
+# creating canvas
 root = Tk()
 root.title("Blue Balls")
 canvas = Canvas(root, width=512, height=512, bg='pink', cursor='cross')
 canvas.pack()
 
+# number of the balls
 n = 80
 
-
+# color set for balls
 colors = ['red', 'blue', 'green', 'red', 'red']
+
+# creating list of balls
 balls = []
 for i in range(n):
     x1 = randint(20, canvas.winfo_reqwidth() - 50)
@@ -49,17 +64,23 @@ for i in range(n):
     velx = choice([-5, -3, 3, 5])
     vely = choice([-5, -3, 3, 5])
     balls.append(Ball(canvas, x1, y1, x2, y2, velx, vely, colors[i % 4]))
-
+# balls start to move
 for i in range(n):
     balls[i].move_ball()
 
-
+# creating score panel
 scr = 0
 score = Label(root, text='Score: ' + str(scr))
 score.pack(side=RIGHT)
 
 
 def click(event):
+    """
+    initialising click event
+    if you got blue balls it incr your points
+    red balls decr your score
+    and green and others is for the random
+    """
     global scr
     for i in range(n):
         r = (balls[i].x2 - balls[i].x1) / 2
@@ -84,12 +105,16 @@ def click(event):
             break
 
 
+# creates entry for username
 player = Entry(root, text='User_name: ', justify=RIGHT)
 player.insert(0, 'User_name')
 player.pack(side=RIGHT)
 
 
 def savescore(event):
+    """
+    def for saving score
+    """
     global scr
     print('Saved')
     f = open('scoreboard.txt', 'a')
@@ -99,11 +124,10 @@ def savescore(event):
     score.config(text='Score ' + str(scr))
 
 
+# creates the button to launch savescore()
 save = Button(root, text=' Save ')
 save.bind('<Button-1>', savescore)
 save.pack(side=RIGHT)
-
-
 canvas.bind('<Button-1>', click)
 
 root.mainloop()
