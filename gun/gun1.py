@@ -255,7 +255,7 @@ class game():
     def new_game(self, event=''):
         """
         Один такт игры.
-        Такт состоит из хода первого, а затем второго игрока, если не наступило условие победы.
+        Такт состоит из хода игрока, если не наступило условие победы.
         """
         self.t1.new_target()
         self.t2.new_target()
@@ -300,7 +300,6 @@ class game():
         canv.delete(self.gun1)
         if self.score1 - self.score2 > 50:
             canv.itemconfig(self.screen, text='Вы победили!')
-
 
         root.after(750, game.new_game)
 
